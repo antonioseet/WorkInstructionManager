@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WorkInstructionManager
 {
+
     public class WorkInstruction
     {
         private int inst_ID;
@@ -13,7 +14,7 @@ namespace WorkInstructionManager
         private List<string> instructionsList;
 
         private int index = 0;
-        private int ins_Count;
+        private int max;
 
         public WorkInstruction(int inst_ID, string ins_Title, string ins_Description, List<string> instructionsList)
         {
@@ -21,7 +22,8 @@ namespace WorkInstructionManager
             this.ins_Title = ins_Title;
             this.ins_Description = ins_Description;
             this.instructionsList = instructionsList;
-            this.ins_Count = instructionsList.Count;
+            this.instructionsList.Add("COMPLETE");
+            this.max = instructionsList.Count - 1;
         }
         public WorkInstruction(int inst_ID, List<string> instructionsList)
         {
@@ -29,17 +31,44 @@ namespace WorkInstructionManager
             this.instructionsList = instructionsList;
         }
 
-        public int instructionsLeft()
+        public string start()
         {
-            return ins_Count - index;
+            return getStringWithProgress();
         }
 
-        public string nextInstruction()
+        public string getNextInstruction()
         {
-            string instruction = instructionsList[index];
-            index++;
+            if (index != max)
+                index++;
+
+            return getStringWithProgress();
+        }
+
+        public string getPrevInstruction()
+        {
+
+            if (index != 0)
+                index--;
+
+            return getStringWithProgress();
+        }
+
+        public string reset()
+        {
+            index = 0;
+            return start();
+        }
+
+        private string getStringWithProgress()
+        {
+            string instruction = instruction = instructionsList[index] +
+                    "\n" + "(" + progress() + ")";
             return instruction;
         }
 
+        private string progress()
+        {
+            return index + "/" + max;
+        }
     }
 }
