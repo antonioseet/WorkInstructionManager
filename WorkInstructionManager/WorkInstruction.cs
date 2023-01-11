@@ -46,7 +46,6 @@ namespace WorkInstructionManager
 
         public string getPrevInstruction()
         {
-
             if (index != 0)
                 index--;
 
