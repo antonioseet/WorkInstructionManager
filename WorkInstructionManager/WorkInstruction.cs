@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using System.Reflection;
 using System.Text;
 
 namespace WorkInstructionManager
@@ -8,27 +10,45 @@ namespace WorkInstructionManager
 
     public class WorkInstruction
     {
-        private int inst_ID;
-        private string ins_Title;
-        private string ins_Description;
-        private List<string> instructionsList;
+        public int Inst_ID { get; set; }
+        public string Ins_Title { get; set; }
+        public string Ins_Description { get; set; }
+        public List<string> InstructionsList { get; set; }
 
         private int index = 0;
         private int max;
 
         public WorkInstruction(int inst_ID, string ins_Title, string ins_Description, List<string> instructionsList)
         {
-            this.inst_ID = inst_ID;
-            this.ins_Title = ins_Title;
-            this.ins_Description = ins_Description;
-            this.instructionsList = instructionsList;
-            this.instructionsList.Add("COMPLETE");
-            this.max = instructionsList.Count - 1;
+            Inst_ID = inst_ID;
+            Ins_Title = ins_Title;
+            Ins_Description = ins_Description;
+            InstructionsList = instructionsList;
+            InstructionsList.Add("COMPLETE");
+            max = instructionsList.Count - 1;
         }
+
         public WorkInstruction(int inst_ID, List<string> instructionsList)
         {
-            this.inst_ID = inst_ID;
-            this.instructionsList = instructionsList;
+            inst_ID = inst_ID;
+            instructionsList = instructionsList;
+        }
+
+        public WorkInstruction(string json)
+        {
+            WorkInstruction temp = JsonConvert.DeserializeObject<WorkInstruction>(json);
+
+            Inst_ID = temp.Inst_ID;
+            Ins_Title = temp.Ins_Title;
+            Ins_Description = temp.Ins_Description;
+            InstructionsList = temp.InstructionsList;
+            InstructionsList.Add("COMPLETE");
+            max = temp.InstructionsList.Count - 1;
+
+        }
+
+        public WorkInstruction()
+        {
         }
 
         public string start()
@@ -60,7 +80,7 @@ namespace WorkInstructionManager
 
         private string getStringWithProgress()
         {
-            string instruction = instruction = instructionsList[index] +
+            string instruction = instruction = InstructionsList[index] +
                     "\n" + "(" + progress() + ")";
             return instruction;
         }
@@ -68,6 +88,29 @@ namespace WorkInstructionManager
         private string progress()
         {
             return index + "/" + max;
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+
+            // Example of what the json would look like.
+            /*
+             * 
+             * {
+                  "Inst_ID": 123,
+                  "Ins_Title": "Example Title",
+                  "Ins_Description": "Example Description",
+                  "InstructionsList": [
+                    "Instruction 1",
+                    "Instruction 2",
+                    "Instruction 3"
+                  ]
+                }
+            *
+            *
+            */
+
         }
     }
 }
