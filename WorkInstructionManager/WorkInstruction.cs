@@ -13,7 +13,7 @@ namespace WorkInstructionManager
     /// </summary>
     public class WorkInstructionWrapper
     {
-        public WorkInstruction Value { get; set; }
+        public WorkInstruction workInstruction { get; set; }
     }
 
     public class WorkInstruction
@@ -42,7 +42,7 @@ namespace WorkInstructionManager
             this.instructionList = instructionsList;
 
             // Final instruction added for when users reach the end of a Work Instruction.
-            this.instructionList.Add(CompleteInstruction());
+            //this.instructionList.Add(CompleteInstruction());
             this.max = instructionsList.Count - 1;
         }
 
@@ -54,7 +54,7 @@ namespace WorkInstructionManager
         public WorkInstruction(string json)
         {
             WorkInstructionWrapper wrapper = JsonSerializer.Deserialize<WorkInstructionWrapper>(json);
-            WorkInstruction value = wrapper.Value;
+            WorkInstruction value = wrapper.workInstruction;
 
             this.id = value.id;
             this.title = value.title;
@@ -154,15 +154,61 @@ namespace WorkInstructionManager
         {
             return new Instruction()
             { instructionId = -1,
-                instructionText = "COMPLETE",
+                instructionText = "COMPLETE\n\n- Click 'Reset' to start over\n- Click 'Prev' to go back a step",
                 instructionImage = null, 
                 instructionCoordinates = null, 
                 instructionForeignKey = -1
             };
         }
+
+        /// <summary>
+        /// Returns a sample instruction in Json Form, this is to test without having to call the REST Endpoint.
+        /// Note: The 'Complete' instruction will not be present here, and does not need to be present here.
+        /// </summary>
+        /// <returns>Json String Representing a Work Instruction object.</returns>
+        public static string sampleWorkInstruction1()
+        {
+            List<string> sampleSteps = new List<string>();
+            sampleSteps.Add("Get out a large bowl to mix ingridients");
+            sampleSteps.Add("Place brownie mix in the bowl");
+            sampleSteps.Add("Place 1/2 cup of water in the bowl");
+            sampleSteps.Add("Place 1/3 cup of vegetable oil in the bowl");
+            sampleSteps.Add("Crack two eggs and add them to the bowl");
+            sampleSteps.Add("Mix thoroughly!");
+            sampleSteps.Add("Preheat oven to 350 degrees Farenheit (or 175 degrees Celcius)");
+            sampleSteps.Add("Take out a baking pan, and coat it with cooking spray, oil, or butter");
+            sampleSteps.Add("Place mixed contents in the pan");
+            sampleSteps.Add("Once the oven is preheated, place the pan with brownie mix in the oven for 30 Minutes.");
+            sampleSteps.Add("Once 30 minutes have passed, put on baking mit");
+            sampleSteps.Add("Carefully remove the brownies from oven using the mit and place in a heat resistent surface");
+            sampleSteps.Add("Wait a few minutes for them to cool, cut into the shape of your choosing");
+            sampleSteps.Add("Serve");
+            sampleSteps.Add("ENJOY!");
+
+            List<Instruction> sampleInstructions = new List<Instruction>();
+
+            for(int i = 0; i < sampleSteps.Count; i++)
+            {
+                string imageName = "img" + i + ".png";
+                string dummyCoordinates = "10,10";
+                sampleInstructions.Add(new Instruction(i, sampleSteps[i], imageName, dummyCoordinates, i));
+            }
+
+            // This bypasses the 'complete' instruction addition.
+            WorkInstruction sample = new WorkInstruction
+            {
+                id = 12345,
+                title = "Make Brownies",
+                description = "When making brownies, make sure you have the right ingridients!\n- Brownie Mix\n- 2x Eggs\n- 1/3 cup of Veg Oil\n- 1/2 cup of Water",
+                instructionList = sampleInstructions
+            };
+
+            WorkInstructionWrapper sampleWrapper = new WorkInstructionWrapper{ workInstruction = sample };
+            return JsonSerializer.Serialize(sampleWrapper);
+        }
+
     }
 }
 
 // TODO:
-// - Use the manager to work as the API that navigates between instructions.
 // - Instead of inserting a "COMPLETE" instruction at the end, find a more elegant solution.

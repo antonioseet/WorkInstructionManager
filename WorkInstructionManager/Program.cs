@@ -38,7 +38,7 @@ namespace WorkInstructionManager
             };
 
             // Create a wrapper and set value to be the newly created WorkInstruction
-            WorkInstructionWrapper wrapper = new WorkInstructionWrapper { Value = workInstruction };
+            WorkInstructionWrapper wrapper = new WorkInstructionWrapper { workInstruction = workInstruction };
             string json = JsonSerializer.Serialize(wrapper);
 
             // Print the JSON to check what it looks like and if it's what we expect.
@@ -56,18 +56,30 @@ namespace WorkInstructionManager
             //no need for --> WorkInstructionWrapper wrapper2 = JsonSerializer.Deserialize<WorkInstructionWrapper>(json);
 
             // Call the WorkInstruction constructor directly and it will take care of the wrapper. (can be removed later)
-            workInstruction = new WorkInstruction(json);
+            // Note: The 'complete' instruction gets added in the constructor
+            workInstruction = new WorkInstruction(WorkInstruction.sampleWorkInstruction1());
 
             Console.WriteLine("title: " + workInstruction.title);
             Console.WriteLine("id: " + workInstruction.id);
             Console.WriteLine("description: " + workInstruction.description);
             Console.WriteLine("start(0): " + workInstruction.start());
-            Console.WriteLine("next(1): " + workInstruction.getNextInstruction());
-            Console.WriteLine("prev(0): " + workInstruction.getPrevInstruction());
-            Console.WriteLine("next(1): " + workInstruction.getNextInstruction());
-            Console.WriteLine("next(1): " + workInstruction.getNextInstruction());
-            Console.WriteLine("reset(0): " + workInstruction.reset());
-            Console.WriteLine("next(1): " + workInstruction.getNextInstruction());
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction()+"\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
+            Console.WriteLine("next(1): " + workInstruction.getNextInstruction() + "\n");
 
             Console.WriteLine("done"); // Add a breakpoint here to inspect the output and element for verification. 
         }

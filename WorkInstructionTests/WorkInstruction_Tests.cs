@@ -61,7 +61,7 @@ public class Tests
         // Create a wrapper and set value to be the newly created WorkInstruction
         // The wrapper is necessary because we want to make sure the ouptuted JSON
         // matches the JSON we get back from the REST Endpoint.
-        WorkInstructionWrapper wrapper = new WorkInstructionWrapper { Value = workInstruction };
+        WorkInstructionWrapper wrapper = new WorkInstructionWrapper { workInstruction = workInstruction };
         json = JsonSerializer.Serialize(wrapper);
 		w = new WorkInstruction(json);
     }
@@ -141,4 +141,8 @@ public class Tests
         Assert.That(actual, Is.EqualTo(expected));
     }
 
+
+	// TODO:
+	// - What to do when json is not formatted properly?
+	// - 
 }
