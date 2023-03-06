@@ -110,10 +110,35 @@ public class Tests
             // Instruction Id numbers
             Assert.That(ins_1.instructionId, Is.EqualTo(1));
             Assert.That(ins_2.instructionId, Is.EqualTo(2));
+
 			// Instruction texts
 			Assert.That(ins_1.instructionText, Is.EqualTo("step1"));
 			Assert.That(ins_2.instructionText, Is.EqualTo("step2"));
 
 		});
     }
+
+    [Test]
+	// Test starting the instruction and moving forward and backward.
+    public void Test_InstructionFlow()
+    {
+		// Work Instruction 'w' already created above
+
+		string actual = w.start();
+		string expected = "step1\n(0/2)";
+        Assert.That(actual, Is.EqualTo(expected));
+		
+		actual = w.getNextInstruction();
+		expected = "step2\n(1/2)";
+        Assert.That(actual, Is.EqualTo(expected));
+
+		actual = w.getNextInstruction();
+		expected = "COMPLETE\n(2/2)";
+        Assert.That(actual, Is.EqualTo(expected));
+
+        actual = w.getPrevInstruction();
+        expected = "step2\n(1/2)";
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
 }
